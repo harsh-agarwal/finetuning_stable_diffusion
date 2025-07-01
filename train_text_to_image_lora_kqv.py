@@ -18,7 +18,7 @@ from torchvision import datasets, transforms
 from torch.utils.data import DataLoader
 
 from dataset_utils import filter_valid_caption, get_image_transforms, preprocess_example
-from lora_utils import get_peft_lora_config, apply_peft_lora, save_lora_weights
+from lora_utils import get_lora_config, apply_lora_to_unet, save_lora_weights
 from model_utils import load_models
 from validation_utils import run_validation
 
@@ -75,9 +75,9 @@ def main():
     # Load models
     vae, unet, tokenizer, text_encoder, noise_scheduler = load_models(args.pretrained_model_name_or_path)
     
-    # Set up LoRA for KQV layers only using PEFT
-    lora_config = get_peft_lora_config(args.lora_rank)
-    unet = apply_peft_lora(unet, lora_config)
+    # Set up LoRA for KQV layers only using diffusers' LoRA support
+    lora_config = get_lora_config(args.lora_rank)
+    unet = apply_lora_to_unet(unet, lora_config)
 
     # Load dataset using torchvision
     transform = transforms.Compose([
