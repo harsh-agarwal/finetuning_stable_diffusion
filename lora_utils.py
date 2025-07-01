@@ -1,4 +1,4 @@
-from diffusers.loaders import LoRAAttnProcessor
+from diffusers.models.attention_processor import LoRAAttnProcessor
 import torch
 
 def get_lora_config(rank):
